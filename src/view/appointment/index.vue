@@ -39,7 +39,7 @@
                 @click="showUserPicker = true"
             />
         </van-cell-group>
-        <div style="margin: 16px">
+        <div style="margin: 32px">
             <van-button
                 round
                 block
@@ -123,9 +123,9 @@ export default defineComponent({
     },
     setup() {
         onMounted(() => {
-            axios.get("http://118.25.4.192:7001/getUserList").then((res) => {
-                if (res.status === 200) {
-                    userList.value = res.data;
+            axios.get("/getUserList").then((res) => {
+                if (res.data.code === 200) {
+                    userList.value = res.data.data;
                 }
             });
         });
@@ -182,7 +182,7 @@ export default defineComponent({
         const onSumbit = () => {
             Toast.loading("提交中...");
             axios
-                .post("http://118.25.4.192:7001/addAppointment", {
+                .post("/addAppointment", {
                     date: form.date,
                     area: form.area,
                     time: form.time,
@@ -193,6 +193,8 @@ export default defineComponent({
                     if (res.data.code == 200) {
                         Toast.success("提交成功");
                         router.push("home");
+                    } else {
+                        Toast.fail(res.data.msg);
                     }
                 });
         };
@@ -222,13 +224,14 @@ export default defineComponent({
     position: relative;
     background: #fff;
     padding-top: 1rem;
+    height: 70vh;
 
     &::before {
         content: "";
         position: absolute;
         top: -1rem;
         width: 100%;
-        height: 1rem;
+        height: 1.5rem;
         border-radius: 1rem 1rem 0 0;
         background: inherit;
     }

@@ -1,37 +1,39 @@
 <template>
     <banner />
-    <van-swipe-cell v-for="item in appointmentList" :key="item.id">
-        <van-cell
-            :border="false"
-            :title="`${item.date} ${areaMap[item.area]} ${item.time}`"
-            :label="`预约人：${item.userName}`"
-        >
-            <template #right-icon>
-                <span
-                    :class="{
-                        'c-error': item.status == '0',
-                        'c-success': item.status == '1',
-                    }"
-                >
-                    {{ ["已过期", "未预约"][item.status * 1] }}
-                </span>
+    <div class="appointmentList">
+        <van-swipe-cell v-for="item in appointmentList" :key="item.id">
+            <van-cell
+                :border="false"
+                :title="`${item.date} ${areaMap[item.area]} ${item.time}`"
+                :label="`预约人：${item.userName}`"
+            >
+                <template #right-icon>
+                    <span
+                        :class="{
+                            'c-error': item.status == '0',
+                            'c-success': item.status == '1',
+                        }"
+                    >
+                        {{ ["已过期", "未预约"][item.status * 1] }}
+                    </span>
+                </template>
+            </van-cell>
+            <template v-if="item.status == '1'" #right>
+                <van-button
+                    class="delete-button"
+                    square
+                    type="danger"
+                    text="取消预约"
+                    @click="onCancelAppointment(item.id)"
+                />
             </template>
-        </van-cell>
-        <template v-if="item.status == '1'" #right>
-            <van-button
-                class="delete-button"
-                square
-                type="danger"
-                text="取消预约"
-                @click="onCancelAppointment(item.id)"
-            />
-        </template>
-    </van-swipe-cell>
+        </van-swipe-cell>
+    </div>
 </template>
 
 <script>
 import axios from "axios";
-import { defineComponent, reactive, ref, toRefs, onMounted } from "vue";
+import { defineComponent, ref, onMounted } from "vue";
 import { SwipeCell, Cell, Button, Toast } from "vant";
 import Banner from "../../components/banner.vue";
 
@@ -56,16 +58,15 @@ export default defineComponent({
 
         const fetchList = () => {
             axios
-                .get("http://118.25.4.192:7001/getAppointmentList")
+                .get("/getAppointmentList")
                 .then((res) => {
-                    console.log(res);
                     appointmentList.value = res.data;
                 });
         };
         const onCancelAppointment = (id) => {
             Toast.loading("取消中...");
             axios
-                .get(`http://118.25.4.192:7001/cancelAppointment?id=${id}`)
+                .get(`/cancelAppointment?id=${id}`)
                 .then((res) => {
                     Toast.clear();
                     if (res.data.code == 200) {
@@ -85,6 +86,21 @@ export default defineComponent({
 </script>
 
 <style lang="less">
+.appointmentList {
+    position: relative;
+    background: #fff;
+    padding-top: 1rem;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: -1rem;
+        width: 100%;
+        height: 1.5rem;
+        border-radius: 1rem 1rem 0 0;
+        background: inherit;
+    }
+}
 .c-error {
     color: red;
 }

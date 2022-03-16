@@ -1,9 +1,5 @@
 <template>
     <div class="homeWrap">
-        <!-- <div class="banner">
-            <p>欢迎使用</p>
-            <p>福州工人文化宫场地预约平台</p>
-        </div> -->
         <banner />
         <div class="menuWrap">
             <van-cell
@@ -27,7 +23,6 @@
 
 <script>
 import { defineComponent, reactive } from "vue";
-import { useRouter } from "vue-router";
 import { Icon, Cell } from "vant";
 import Banner from "../../components/banner.vue";
 
@@ -38,23 +33,21 @@ export default defineComponent({
         Banner,
     },
     setup() {
-        const router = useRouter();
         const menuList = reactive([
             {
                 name: "前往预约",
                 icon: "phone-o",
                 to: "appointment",
-                onclick: () => {
-                    router.push("appointment");
-                },
             },
             {
                 name: "预约记录",
                 icon: "todo-list-o",
                 to: "appointmentList",
-                onclick: () => {
-                    router.push("appointmentList");
-                },
+            },
+            {
+                name: "预约人管理",
+                icon: "friends-o",
+                to: "/user/list",
             },
         ]);
 
@@ -77,7 +70,7 @@ export default defineComponent({
             position: absolute;
             top: -1rem;
             width: 100%;
-            height: 1rem;
+            height: 1.5rem;
             border-radius: 1rem 1rem 0 0;
             background: inherit;
         }

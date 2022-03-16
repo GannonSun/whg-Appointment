@@ -32,6 +32,37 @@ const routes = [
             title: "预约记录",
         },
     },
+    // {
+    //     name: "userList",
+    //     path: "/userList",
+    //     component: () => import("./view/user/userList"),
+    //     meta: {
+    //         title: "用户管理",
+    //     },
+    // },
+    {
+        name: "user",
+        path: "/user",
+        component: () => import("./view/user"),
+        children: [
+            {
+                name: "userList",
+                path: "list",
+                component: () => import("./view/user/userList"),
+                meta: {
+                    title: "用户管理",
+                },
+            },
+            {
+                name: "userDetail",
+                path: "detail",
+                component: () => import("./view/user/detail"),
+                meta: {
+                    title: "用户编辑",
+                },
+            },
+        ],
+    },
 ];
 
 const router = createRouter({
