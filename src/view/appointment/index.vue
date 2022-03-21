@@ -106,6 +106,7 @@ import {
     Button,
     Toast,
 } from "vant";
+import moment from "moment";
 import Banner from "../../components/banner.vue";
 
 export default defineComponent({
@@ -160,9 +161,7 @@ export default defineComponent({
         const showTimePicker = ref(false);
         const showUserPicker = ref(false);
         const onSelectDate = (date) => {
-            form.date = `${date.getFullYear()}/${
-                date.getMonth() + 1
-            }/${date.getDate()}`;
+            form.date = moment(date).format("YYYY/MM/DD");
             showCalendar.value = false;
         };
         const onSelectArea = (value) => {
@@ -187,6 +186,7 @@ export default defineComponent({
                     area: form.area,
                     time: form.time,
                     user: form.user,
+                    username: form.userText,
                 })
                 .then((res) => {
                     Toast.clear();

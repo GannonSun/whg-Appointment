@@ -5,7 +5,7 @@
             <van-cell
                 :border="false"
                 :title="`${item.date} ${areaMap[item.area]} ${item.time}`"
-                :label="`预约人：${item.userName}`"
+                :label="`预约人：${item.username}`"
             >
                 <template #right-icon>
                     <span
